@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 import codecs
-import json
+from Library import *
 
 
 def main():
@@ -32,36 +32,11 @@ def main():
     if file_name == '':
         file_name = default_file_name
 
-    with open(file_name, encoding='utf-8') as file:
-        data = json.load(file)['tracks']  # we only care about tracks
+    lib = Library()
+    lib.load(file_name)
 
-    # Group data: artist and album dictionary
-    # album and the track dictionary
-    # { artist, { album, { track, track } } }
-    dictionaries = {}
-    artistCount = 0
-    albumCount = 0
-    trackCount = 0
-
-    for elem in data:
-        artist = elem['artist']
-        album = elem['album']
-        track = elem['track']
-
-        if artist in dictionaries:
-            if album not in dictionaries.get(artist):
-                # artist but no album
-                dictionaries[artist][album] = {}
-                albumCount += 1
-        else:
-            # no artist no album
-            dictionaries[artist] = {}
-            dictionaries[artist][album] = {}
-            albumCount += 1
-            artistCount += 1
-
-        dictionaries[artist][album][track] = track
-        trackCount += 1
+    dictionaries = lib.get_dict()
+    artist_count, album_count, track_count = lib.get_stats()
 
     # Convert dictionary into a list
     ordered = []
@@ -82,15 +57,15 @@ def main():
             tracks.sort()
 
     # Calculate top artists
-    topArtists = []
+    top_artists = []
     for artist, albums in ordered:
-        artistTracks = 0
+        n_tracks = 0
         for album, tracks in albums:
             for track in tracks:
-                artistTracks += 1
-        topArtists.append((artistTracks, artist))
-        
-    topArtists.sort(reverse= True)
+                n_tracks += 1
+        top_artists.append((n_tracks, artist))
+
+    top_artists.sort(reverse=True)
 
     # OUTPUT
     # Characters like řá were causing problems in W10 so we use utf-8-sig
@@ -103,13 +78,13 @@ def main():
                     output_file.write('\t\tTrack: ' + track + '\n')
             output_file.write('\n')
 
-        output_file.write('\nArtist count: ' + str(artistCount) + '\n')
-        output_file.write('Album count: ' + str(albumCount) + '\n')
-        output_file.write('Track count: ' + str(trackCount) + '\n\n')
+        output_file.write('\nArtist count: ' + str(artist_count) + '\n')
+        output_file.write('Album count: ' + str(album_count) + '\n')
+        output_file.write('Track count: ' + str(track_count) + '\n\n')
 
         output_file.write('Position       Track count          Artist\n')
         i = 1
-        for tracks, artist in topArtists:
+        for tracks, artist in top_artists:
             output_file.write(
                 str('{:15}'.format(i)) + str('{:15}'.format(tracks)) + '\t\t' + str('{:15}'.format(artist)) + '\n')
             i += 1
