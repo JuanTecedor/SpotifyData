@@ -107,10 +107,11 @@ def main():
         output_file.write('Album count: ' + str(albumCount) + '\n')
         output_file.write('Track count: ' + str(trackCount) + '\n\n')
 
-        output_file.write('Position  Track count       Artist\n')
+        output_file.write('Position       Track count          Artist\n')
         i = 1
         for tracks, artist in topArtists:
-            output_file.write(str('{:10}'.format(i)) + str('{:10}'.format(tracks)) + '\t\t' + artist + '\n')
+            output_file.write(
+                str('{:15}'.format(i)) + str('{:15}'.format(tracks)) + '\t\t' + str('{:15}'.format(artist)) + '\n')
             i += 1
 
 
