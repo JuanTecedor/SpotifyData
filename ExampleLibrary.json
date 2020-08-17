@@ -1,0 +1,34 @@
+{
+  "tracks": [
+    {
+      "artist": "Artist 3",
+      "album": "Album 1",
+      "track": "Song 5"
+    },
+    {
+      "artist": "Artist 2",
+      "album": "Album 1",
+      "track": "Song 1"
+    },
+    {
+      "artist": "Artist 1",
+      "album": "Album 1",
+      "track": "Song 1"
+    },
+    {
+      "artist": "Artist 1",
+      "album": "Album 1",
+      "track": "Song 2"
+    }
+  ],
+  "albums": [
+  ],
+  "shows": [
+  ],
+  "episodes": [
+  ],
+  "bannedTracks": [
+  ],
+  "other": [
+  ]
+}
