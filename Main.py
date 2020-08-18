@@ -96,13 +96,13 @@ def main():
             i += 1
         output_file.write('\n\n')
 
-        output_file.write('Position       Seconds played           Artist          ' +
-                          '                    Track name\n')
+        output_file.write('Position     Seconds    Artist          ' +
+                          '                            Track name\n')
         i = 1
         for track_name, ms_played, artist in most_played:
             output_file.write(
-                str('{:15}'.format(i)) + '\t\t' + str('{:15}'.format(ms_played // 1000)) + '\t\t' +
-                str('{:30}'.format(artist)) + '\t\t' + track_name + '\n'
+                str('{:8}'.format(i)) + '\t' + str('{:8}'.format(ms_played // 1000)) + '\t' +
+                str('{:40}'.format(artist)) + '\t' + track_name + '\n'
             )
             i += 1
         output_file.write('\n\n')
