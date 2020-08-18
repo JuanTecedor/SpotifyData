@@ -1,7 +1,12 @@
 # SpotifyData
 
 ## TLDR
-This tool outputs some spotify stats and all your songs ordered alphabetically as well as your top artists (the ones with more tracks).
+This tool outputs some usefull spotify stats (it's all based in liked songs and time spent listening to songs):
+
+* All your tracks ordered by artist, album and song name in a recursive manner (check example below)
+* Artist, album and track count
+* Artists ordered by track number
+* Artists ordered by time spent listening at them
 
 ## Introduction
 
@@ -73,6 +78,15 @@ Position  Track count       Artist
          3         1		Artist 2
 ```
 
+If you also supply some StreamingHistory.json files expect something along these lines:
+```
+Position     Seconds    Artist                                      Track name
+       1	 554	Artist 1                                    Song 1
+       2	 258	Artist 3            	                    Song 5
+       3	   1	Artist 2                           	    Song 1
+```
+
+
 ## How does it work?
 
 Data is loaded into a dictionary with several dictionaries inside. A dictionary is used to avoid duplicates.
@@ -85,8 +99,10 @@ Next the topArtists list is calculated from the ordered list.
 
 Finally, the data is printed.
 
+The rest of the outputs work in a simillar manner.
+
 ## TODO
 * General code cleanup
-* List songs by time spent listening to them
+* ~~List songs by time spent listening to them~~
 * Error checking if the file doesn't exist
-* Alignment is broken in the example in top artists
+* ~~Alignment is broken in the example in top artists~~
