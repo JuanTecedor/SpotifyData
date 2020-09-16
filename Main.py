@@ -27,8 +27,8 @@ from Library import *
 
 def get_filenames():
     print('Please drag all the files into the executable directory.')
-    print('At least a "YourLibrary.json" should be present')
-    print('Program will also add "StreamingHistory*"')
+    print('At least a "YourLibrary.json" should be present.')
+    print('The program will also search for "StreamingHistory*"')
     print('This works with StreamingHistory1.json, StreamingHistory2.json, ...')
     input('Press Enter to continue...')
 
