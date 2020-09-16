@@ -21,59 +21,33 @@
 # SOFTWARE.
 
 import codecs
+import glob
 from Library import *
 
 
-def main():
-    file_name = ''
-    default_file_name = 'YourLibrary.json'
+def get_filenames():
+    print('Please drag all the files into the executable directory.')
+    print('At least a "YourLibrary.json" should be present')
+    print('Program will also add "StreamingHistory*"')
+    print('This works with StreamingHistory1.json, StreamingHistory2.json, ...')
+    input('Press Enter to continue...')
 
-    file_name = input('Enter file name (empty for default ' + default_file_name + '):')
-    if file_name == '':
-        file_name = default_file_name
+    default_library_filename = 'YourLibrary.json'
 
-    lib = Library(file_name)
-    dictionaries = lib.get_dict()
-    artist_count, album_count, track_count = lib.get_stats()
+    streaming_filenames = []
+    for file in glob.glob('StreamingHistory*'):
+        streaming_filenames.append(file)
 
-    # TODO
-    lib.load_streaming_history(['StreamingHistory0.json', 'StreamingHistory1.json', 'StreamingHistory2.json'])
-    most_played = lib.get_most_played()
+    return default_library_filename, streaming_filenames
 
-    # Convert dictionary into a list
-    ordered = []
-    for artist, artist_dic in dictionaries.items():
-        new_album_list = []
-        ordered.append([artist, new_album_list])
-        for album, album_dic in artist_dic.items():
-            new_track_list = []
-            new_album_list.append([album, new_track_list])
-            for track_name, track_data in album_dic.items():
-                new_track_list.append(track_name)
 
-    # Sort the list
-    ordered.sort()
-    for artist, albums in ordered:
-        albums.sort()
-        for album, tracks in albums:
-            tracks.sort()
-
-    # Calculate top artists
-    top_artists_track_count = []
-    for artist, albums in ordered:
-        n_tracks = 0
-        for album, tracks in albums:
-            for track in tracks:
-                n_tracks += 1
-        top_artists_track_count.append((n_tracks, artist))
-
-    top_artists_track_count.sort(reverse=True)
-
+def print_output(library_list, most_played, top_artists_by_track_count,
+                 artist_count, album_count, track_count):
     # OUTPUT
     # Characters like řá were causing problems in W10 so we use utf-8-sig
     with codecs.open('Output.out', 'w', 'utf-8-sig') as output_file:
         # Print main chunk of data
-        for artist, album_list in ordered:
+        for artist, album_list in library_list:
             output_file.write(('Artist: ' + artist + '\n'))
             for album, track_list in album_list:
                 output_file.write('\tAlbum: ' + album + '\n')
@@ -88,7 +62,7 @@ def main():
 
         output_file.write('Position       Track count          Artist\n')
         i = 1
-        for tracks, artist in top_artists_track_count:
+        for tracks, artist in top_artists_by_track_count:
             output_file.write(
                 str('{:15}'.format(i)) + str('{:15}'.format(tracks)) + '\t\t' +
                 str('{:15}'.format(artist)) + '\n'
@@ -106,6 +80,34 @@ def main():
             )
             i += 1
         output_file.write('\n\n')
+
+
+def main():
+    library_file_name, streaming_filenames = get_filenames()
+
+    lib = Library(library_file_name)
+    lib.load_library()
+
+    artist_count, album_count, track_count = lib.get_stats()
+
+    lib.load_streaming_history(streaming_filenames)
+    most_played = lib.get_most_played()
+
+    library_list = lib.get_library_list()
+
+    # Calculate top artists
+    top_artists_by_track_count = []
+    for artist, albums in library_list:
+        n_tracks = 0
+        for album, tracks in albums:
+            for track in tracks:
+                n_tracks += 1
+        top_artists_by_track_count.append((n_tracks, artist))
+
+    top_artists_by_track_count.sort(reverse=True)
+
+    print_output(library_list, most_played, top_artists_by_track_count,
+                 artist_count, album_count, track_count)
 
 
 if __name__ == '__main__':
