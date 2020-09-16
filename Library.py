@@ -40,14 +40,15 @@ class Library:
     artist_count = 0
     album_count = 0
     track_count = 0
-    json_data = None
 
     def __init__(self, file_name):
         with open(file_name, encoding='utf-8') as file:
-            self.json_data = json.load(file)['tracks']  # we only care about tracks
+            json_data = json.load(file)['tracks']  # we only care about tracks
 
-    def load_library(self):
-        for elem in self.json_data:
+        self._load_library(json_data)
+
+    def _load_library(self, json_data):
+        for elem in json_data:
             artist = elem['artist']
             album = elem['album']
             track = elem['track']
@@ -75,7 +76,7 @@ class Library:
         # and       | <- here 'o' and 'O'
         # The House Of The Rising Sun
         # elsewhere and things like that so we can't use the previous dictionary
-        mostPlayedDict = {}
+        most_played_dict = {}
         # mostPlayedDict structure:
         # { artist, (
         # key = artist
@@ -90,15 +91,15 @@ class Library:
                     ms_played = elem['msPlayed']
 
                     if ms_played != 0:
-                        if artist_name in mostPlayedDict:
-                            if track_name not in mostPlayedDict.get(artist_name):
-                                mostPlayedDict[artist_name][track_name] = 0
+                        if artist_name in most_played_dict:
+                            if track_name not in most_played_dict.get(artist_name):
+                                most_played_dict[artist_name][track_name] = 0
                         else:
-                            mostPlayedDict[artist_name] = {}
-                            mostPlayedDict[artist_name][track_name] = 0
-                        mostPlayedDict[artist_name][track_name] += ms_played
+                            most_played_dict[artist_name] = {}
+                            most_played_dict[artist_name][track_name] = 0
+                        most_played_dict[artist_name][track_name] += ms_played
 
-        for artist, track_data in mostPlayedDict.items():
+        for artist, track_data in most_played_dict.items():
             for track_name, time in track_data.items():
                 self.most_played.append((track_name, time, artist))
 
@@ -124,6 +125,18 @@ class Library:
                 tracks.sort()
 
         return library_list
+
+    def get_top_artists_by_track_count(self):
+        top_artists_by_track_count = []
+        for artist, albums in self.dictionaries.items():
+            n_tracks = 0
+            for album, tracks in albums.items():
+                for track in tracks:
+                    n_tracks += 1
+            top_artists_by_track_count.append((n_tracks, artist))
+
+        top_artists_by_track_count.sort(reverse=True)
+        return top_artists_by_track_count
 
     def get_most_played(self):
         return self.most_played
