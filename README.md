@@ -1,26 +1,38 @@
 # SpotifyData
 
-## TLDR
-This tool outputs some usefull spotify stats (it's all based in liked songs and time spent listening to songs):
+## What does this program do?
+This tool outputs some useful spotify stats (it's all based in liked songs and time spent listening to songs):
 
 * All your tracks ordered by artist, album and song name in a recursive manner (check example below)
 * Artist, album and track count
-* Artists ordered by track number
+* Artists ordered by track count
 * Artists ordered by time spent listening at them
+
+## How to use the program
+
+Make sure all the program .py files are in the same directory as YourLibrary.json.
+If you also have StreamingHistoryX.json files drag them to the same directory.
+
+For linux in the console run:
+```
+python3 Main.py 
+```
 
 ## Introduction
 
-When you download your spotify data found in https://www.spotify.com/es/account/privacy/ ("es" part might differ) the data is presented in JSON format.
+When you download your spotify data found in https://www.spotify.com/es/account/privacy/ ("/es/" part might differ) the data is presented in JSON format.
 It is interesting to see some of the data collected.
 
-After some days you will get some files (I will skip empty and/or non-relevant):
+After some days you will get some files (I will skip some):
 https://support.spotify.com/uk/account_payment_help/privacy/understanding-my-data/
 * Playlist1.json (not used right now)
 * Read_Me_First.pdf (they mention here that you can request more data)
-* StreamingHistory0.json (self-explanatory)
-* SearchQueries.json (every search you made)
-* Userdata.json (creation date and some more data)
-* YourLibrary.json (this is the most interesting for this project ATM)
+* *StreamingHistory0.json*
+* SearchQueries.json (all your searches)
+* Userdata.json (creation date and more data)
+* **YourLibrary.json**
+
+Files in bold are required for the program to work, files in italics are optionally used by the program.
 
 ## What does it output?
 
@@ -86,23 +98,9 @@ Position     Seconds    Artist                                      Track name
        3	   1	Artist 2                           	    Song 1
 ```
 
-
-## How does it work?
-
-Data is loaded into a dictionary with several dictionaries inside. A dictionary is used to avoid duplicates.
-The main dictionary is an artist dictionary, each artist has a dictionary of albums and each album has a track dictionary.
-For example, dict[artist][album][track] is the way to insert a track given artist, album, track names.
-
-Then the dictionary is converted into a list and the list is sorted.
-
-Next the topArtists list is calculated from the ordered list.
-
-Finally, the data is printed.
-
-The rest of the outputs work in a simillar manner.
+## License
+This software is provided under the MIT License. Don't hesitate to contribute!
 
 ## TODO
-* General code cleanup
-* ~~List songs by time spent listening to them~~
-* Error checking if the file doesn't exist
-* ~~Alignment is broken in the example in top artists~~
+* Better error checking
+* Add some options
