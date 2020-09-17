@@ -24,18 +24,11 @@ import json
 
 
 class Library:
-    # TODO
-    # dictionaries structure:
-    # { artist, { album, { track, track } } }
-    # key = artist
-    # value = another dictionary
-    # Second dict
-    #   key' = album
-    #   value' = another dictionary
-    # Third dict
-    #       key'' = track
-    #       value'' = track
+    # Library data is stored in this dictionary
+    # key = artist(str), value = another dict that contains: key = album(str), value = set of songs(str)
+    # dictionary[artist][album] returns a set of all songs given an artist and an album
     dictionaries = {}
+
     most_played = []
     artist_count = 0
     album_count = 0
@@ -59,31 +52,29 @@ class Library:
             if artist in self.dictionaries:
                 if album not in self.dictionaries.get(artist):
                     # artist but no album
-                    self.dictionaries[artist][album] = {}
+                    self.dictionaries[artist][album] = set()
                     self.album_count += 1
             else:
                 # no artist no album
                 self.dictionaries[artist] = {}
-                self.dictionaries[artist][album] = {}
+                self.dictionaries[artist][album] = set()
                 self.album_count += 1
                 self.artist_count += 1
 
-            self.dictionaries[artist][album][track] = track
+            self.dictionaries[artist][album].add(track)
             self.track_count += 1
 
     def _load_streaming_history(self, file_names):
-        # TODO
+        # The House of the Rising Sun         in YourLibrary.json
+        #           | <- here 'o' and 'O'
+        # The House Of The Rising Sun         in StreamingHistoryX.json
+        # We can't use the previous library dictionary
 
-        # Spotify decided to name
-        # The House of the Rising Sun
-        # and       | <- here 'o' and 'O'
-        # The House Of The Rising Sun
-        # elsewhere and things like that so we can't use the previous dictionary
-        most_played_dict = {}
         # mostPlayedDict structure:
-        # { artist, (
-        # key = artist
-        # value = trakName, msPlayed
+        # key = artist(str), value = another dictionary
+        # structure of the second dict:  key = trackname(str), value = msPlayed
+        # most_played_dict[artist][track] returns the msPlayed of a given artist and song
+        most_played_dict = {}
 
         for file_name in file_names:
             with open(file_name, encoding='utf-8') as file:
@@ -117,8 +108,10 @@ class Library:
             for album, album_dic in artist_dic.items():
                 new_track_list = []
                 new_album_list.append([album, new_track_list])
-                for track_name, track_data in album_dic.items():
+                for track_name in album_dic:
                     new_track_list.append(track_name)
+                # for track_name, track_data in album_dic.items():
+                #     new_track_list.append(track_name)
 
         # Order the list
         library_list.sort()
