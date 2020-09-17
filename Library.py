@@ -41,11 +41,14 @@ class Library:
     album_count = 0
     track_count = 0
 
-    def __init__(self, file_name):
-        with open(file_name, encoding='utf-8') as file:
-            json_data = json.load(file)['tracks']  # we only care about tracks
-
-        self._load_library(json_data)
+    def __init__(self, file_name, streaming_filenames):
+        try:
+            with open(file_name, encoding='utf-8') as file:
+                json_data = json.load(file)['tracks']  # we only care about tracks
+            self._load_library(json_data)
+            self._load_streaming_history(streaming_filenames)
+        except FileNotFoundError:
+            print("ERROR:", file_name, "not found.")
 
     def _load_library(self, json_data):
         for elem in json_data:
@@ -68,7 +71,7 @@ class Library:
             self.dictionaries[artist][album][track] = track
             self.track_count += 1
 
-    def load_streaming_history(self, file_names):
+    def _load_streaming_history(self, file_names):
         # TODO
 
         # Spotify decided to name

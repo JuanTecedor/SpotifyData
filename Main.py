@@ -85,8 +85,7 @@ def print_output(library_list, most_played, top_artists_by_track_count,
 def main():
     library_filename, streaming_filenames = get_filenames()
 
-    lib = Library(library_filename)
-    lib.load_streaming_history(streaming_filenames)
+    lib = Library(library_filename, streaming_filenames)
 
     artist_count, album_count, track_count = lib.get_stats()
     print_output(lib.get_library_list(), lib.get_most_played(), lib.get_top_artists_by_track_count(),
