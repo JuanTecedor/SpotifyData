@@ -136,3 +136,10 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# My files
+.idea
+*.out
+*.bak
+YourLibrary.json
+StreamingHistory?.json
