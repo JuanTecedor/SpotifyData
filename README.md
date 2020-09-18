@@ -1,42 +1,34 @@
-# SpotifyData
-
 ## What does this program do?
-This tool outputs some useful spotify stats (it's all based in liked songs and time spent listening to songs):
+This program converts the json data that can be downloaded from your profile into a more readable format.
+Make sure to check the examples to see how the json data looks as well as the output.
 
-* All your tracks ordered by artist, album and song name in a recursive manner (check example below)
-* Artist, album and track count
-* Artists ordered by track count
-* Artists ordered by time spent listening at them
+This may be usefull if you want to migrate platforms or you just want a text file with the name of all of your liked songs.
+
+The program outputs:
+
+* All your tracks ordered alphabetically by artist, album and song name in a recursive manner (check the example below).
+* Artist, album and track count.
+* Artists ordered by liked songs count.
+* Artists ordered by time spent listening at them.
 
 ## How to use the program
 
-Make sure all the program .py files are in the same directory as YourLibrary.json.
-If you also have StreamingHistoryX.json files drag them to the same directory.
+1. Download your data from https://www.spotify.com/es/account/privacy/ ("/es/" part might differ).
+**You may have to wait several days**.
+2. Make sure all the program .py files are in the **same directory** as YourLibrary.json.
+If you also have StreamingHistory*.json files drag them to the same directory.
+You shouldn't need to do any renaming as the program looks for "StreamingHistory*" files (it will match with StreamingHistory0.json, StreamingHistory1.json, ...).
+YourLibrary.json is **required** for the program to run.
+3. Run the program.
 
-For linux in the console run:
+In linux run:
 ```
 python3 Main.py 
 ```
 
-## Introduction
+## Example
 
-When you download your spotify data found in https://www.spotify.com/es/account/privacy/ ("/es/" part might differ) the data is presented in JSON format.
-It is interesting to see some of the data collected.
-
-After some days you will get some files (I will skip some):
-https://support.spotify.com/uk/account_payment_help/privacy/understanding-my-data/
-* Playlist1.json (not used right now)
-* Read_Me_First.pdf (they mention here that you can request more data)
-* *StreamingHistory0.json*
-* SearchQueries.json (all your searches)
-* Userdata.json (creation date and more data)
-* **YourLibrary.json**
-
-Files in bold are required for the program to work, files in italics are optionally used by the program.
-
-## What does it output?
-
-Example input file (YourLibrary.json):
+Input file (YourLibrary.json):
 ```
 {
   "tracks": [
@@ -64,7 +56,7 @@ Example input file (YourLibrary.json):
   // ...
 }
 ```
-Example output (Output.out):
+Output file (Output.out):
 ```
 Artist: Artist 1
 	Album: Album 1
@@ -90,7 +82,7 @@ Position  Track count       Artist
          3         1		Artist 2
 ```
 
-If you also supply some StreamingHistory.json files expect something along these lines:
+If you also supply some StreamingHistory* files:
 ```
 Position     Seconds    Artist                                      Track name
        1	 554	Artist 1                                    Song 1
@@ -100,7 +92,3 @@ Position     Seconds    Artist                                      Track name
 
 ## License
 This software is provided under the MIT License. Don't hesitate to contribute!
-
-## TODO
-* Better error checking
-* Add some options
