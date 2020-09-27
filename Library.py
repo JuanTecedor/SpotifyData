@@ -35,13 +35,19 @@ class Library:
     track_count = 0
 
     def __init__(self, file_name, streaming_filenames):
+        json_data = None
         try:
             with open(file_name, encoding='utf-8') as file:
-                json_data = json.load(file)['tracks']  # we only care about tracks
+                json_data = json.load(file)['tracks']  # only need tracks
+        except FileNotFoundError:
+            print("ERROR 1:", file_name, "not found.")
+            return
+        except OSError:
+            print("ERROR 2: Can't open", file_name, "does it have read permision?")
+            return
+        else:
             self._load_library(json_data)
             self._load_streaming_history(streaming_filenames)
-        except FileNotFoundError:
-            print("ERROR:", file_name, "not found.")
 
     def _load_library(self, json_data):
         for elem in json_data:
@@ -75,10 +81,17 @@ class Library:
         # structure of the second dict:  key = trackname(str), value = msPlayed
         # most_played_dict[artist][track] returns the msPlayed of a given artist and song
         most_played_dict = {}
+        data = None
 
         for file_name in file_names:
-            with open(file_name, encoding='utf-8') as file:
-                data = json.load(file)
+            try:
+                with open(file_name, encoding='utf-8') as file:
+                    data = json.load(file)
+            except FileNotFoundError:
+                print("ERROR 3:", file_name, "not found.")
+            except OSError:
+                print("ERROR 4: Can't open", file_name, "does it have read permision?")
+            else:
                 for elem in data:
                     artist_name = elem['artistName']
                     track_name = elem['trackName']
