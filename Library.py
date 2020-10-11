@@ -26,7 +26,7 @@ import json
 class Library:
     # Library data is stored in this dictionary
     # key = artist(str), value = another dict that contains: key = album(str), value = set of songs(str)
-    # dictionary[artist][album] returns a set of all songs given an artist and an album
+    # dictionaries[artist][album] returns a set of all songs given an artist and an album
     dictionaries = {}
 
     most_played = []
